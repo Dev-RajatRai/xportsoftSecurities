@@ -1,12 +1,13 @@
 import React, { useContext, useRef, useState } from "react";
 import { Navigate } from 'react-router'
 import { Context } from "../../middleware/auth";
+import Modules from "../../data/Modules";
 
 
 const SignInUp = () => {
 
      //   DESTRUCTURING OF GLOBAL STATES USING USECONTEXT
-     const { loggedInUser, setLoggedInUser, userList, setUserList, modules} = useContext(Context);
+     const { loggedInUser, setLoggedInUser, userList, setUserList } = useContext(Context);
 
      //   CREATED STATES;
      const [clasess, setClass] = useState(' ');
@@ -25,6 +26,7 @@ const SignInUp = () => {
                          Email: userCredential.current.Semail.value,
                          password: userCredential.current.Spassword.value,
                          login: false,
+                         sub:Modules
                     }]))
                     alert('You have been registered successfuly, You can login with your credentials now');
                }
@@ -41,34 +43,35 @@ const SignInUp = () => {
           e.preventDefault();
           const loggingUser = userList.find(
                (user) => user.Email === userCredential.current.email.value
-          );
-          if ( loggingUser !== undefined ) {
-               if(loggingUser.email === loggedInUser.Email){
-                    setLoggedInUser((user)=>({...user, login:true}))
-               }
-               else if (loggingUser.password === userCredential.current.password.value) {
-                    setLoggedInUser((elem) => ({
-                         ...elem,
-                         Name: loggingUser.Name,
-                         Email: loggingUser.Email,
-                         password: loggingUser.password,
-                         login: true,
-                         sub:modules
+               );
+               if ( loggingUser !== undefined ) {
+                    if(loggingUser.email === loggedInUser.Email){
+                         setLoggedInUser((user)=>({...user, login:true}))
                     }
-
-                    ))
-
+                    else if (loggingUser.password === userCredential.current.password.value) {
+                         setLoggedInUser((elem) => ({
+                              ...elem,
+                              Name: loggingUser.Name,
+                              Email: loggingUser.Email,
+                              password: loggingUser.password,
+                              login: true,
+                              sub: loggingUser.sub
+                         }
+                         
+                         ))
+                         
+                    } else {
+                         alert("Password Didn't match");
+                         userCredential.current.password.value = "";
+                    }
                } else {
-                    alert("Password Didn't match");
+                    alert("User Doesn't Exist");
                     userCredential.current.password.value = "";
+                    userCredential.current.email.value = "";
+                    
                }
-          } else {
-               alert("User Doesn't Exist");
-               userCredential.current.password.value = "";
-               userCredential.current.email.value = "";
-
-          }
-     };
+          };
+          console.log(loggedInUser)
 
      // IF USER ALREADY LOGGED IN
      if (loggedInUser.login) {

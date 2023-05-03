@@ -6,7 +6,7 @@ let Modules = [
           isCompleted: false,
           isActive:false,
           Marks:0,
-          duration:10,
+          duration:5,
           progress: "00:00:00"
 
      },
@@ -18,7 +18,7 @@ let Modules = [
           isCompleted: false,
           isActive:false,
           Marks:0,
-          duration:10,
+          duration:5,
           progress: "00:00:00"
           
      },
